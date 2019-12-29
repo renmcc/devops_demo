@@ -1,24 +1,47 @@
 from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse
+from django.views import View
+from django.contrib.auth.models import User
 
-# Create your views here.
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import viewsets, mixins,response,permissions
+class MyView(View):
+    def get(self, request, *args, **kwargs):
+        per = 10
+
+        try:
+            page = int(request.GET.get("page", 1))
+        except:
+            page = 1
+        end = page * 10
+        start = end - 10
+
+        queryset = User.objects.all()[start:end]
+        data = list(queryset.values("id","username", "email"))
+        return JsonResponse(data, safe=False)
+
+def articles(request, *args, **kwargs):
+    #return HttpResponse(args)
+    return HttpResponse(kwargs.values())
+
+def index(request):
+    if request.method == "GET":
+        print(request.GET)
+        data = request.GET.copy()
+        data["name"] = 'abc'
+        print(data)
+
+        data1 = request.GET.getlist("name")
+        print(data1)
+    elif request.method == 'POST':
+        print(request.POST)
+
+    return HttpResponse("")
 
 
-class DashboardStatusViewset(viewsets.ViewSet):
-    """
-    list:
-        返回Dashboard数据
-    """
-    permission_classes = (permissions.IsAuthenticated, )
 
-    def list(self, request, *args, **kwargs):
-        data = self.get_content_data()
-        return response.Response(data)
 
-    def get_content_data(self):
-        return {
-            "aa":11,
-            "bb":22
-        }
+
+
+
+def index_template(request):
+    context = {"name": "reboot"}
+    return render(request, "test.html", context)

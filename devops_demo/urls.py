@@ -15,15 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from rest_framework.routers import DefaultRouter
-from dashboard.views import DashboardStatusViewset
-
-
-route = DefaultRouter()
-route.register("Dashboard", DashboardStatusViewset, basename='dashboard')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include(route.urls)),
-    url(r'^api-auth', include("rest_framework.urls",namespace="rest_framework")),
+    url(r'^dashboard/', include("dashboard.urls")),
 ]
