@@ -11,5 +11,7 @@ urlpatterns = [
     url(r'^indext/', views.index_template),
     url(r'^articles/([0-9]{4})/$', views.articles),
     url(r'^articles/(?P<year>[0-9]{4})/(?P<month>[0-9]{2})/(?P<day>[0-9]+/$)', views.articles),
-    url(r'^hellot',views.MyView.as_view())
+    #url(r'^hellot',views.MyView.as_view()),
+    url(r'^hellot/',views.UserListView.as_view(), name='hellot'),
+    url(r'^hellot2/',views.UsersView.as_view(), name='hellot2')
 ]

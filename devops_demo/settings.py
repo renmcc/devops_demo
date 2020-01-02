@@ -133,3 +133,80 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters':{
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+        'default': {
+            'format': '%(levelname)s %(asctime)s %(name)s %(lineno)s %(message)s ',
+            'datefmt': "%Y-%m-%d %H:%M:%S"
+        }
+    },
+    'handlers': {
+        'console':{
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'root': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'when':'D',
+            'interval':7,
+            'filename': 'logs/root.log',
+            'formatter': 'default'
+        },
+        'debug': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/debug.log',
+            'formatter': 'default'
+        },
+        'server': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/server.log',
+            'formatter': 'default'
+        },
+        'request': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/request.log',
+            'formatter': 'default'
+        },
+        'db_backends': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/db_backends.log',
+            'formatter': 'default'
+        }
+    },
+    'loggers': {
+        'django': {
+            'level': 'DEBUG',
+            'handlers': ['debug'],
+            'propagate':False,
+        },
+        'django.server': {
+            'level': 'DEBUG',
+            'handlers': ['server'],
+            'propagate':False,
+        },
+        'django.db.backends': {
+            'level': 'DEBUG',
+            'handlers': ['db_backends'],
+            'propagate': False,
+        },
+    },
+    'root': {
+        'level': 'DEBUG',
+        'handlers': ["root"]
+    },
+}
